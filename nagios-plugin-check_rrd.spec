@@ -12,6 +12,7 @@ Source1:	%{plugin}.cfg
 URL:		http://exchange.nagios.org/directory/Plugins/Databases/RRD/check_rrd-2Epl/details
 BuildRequires:	perl-devel >= 1:5.8.0
 BuildRequires:	rpm-perlprov >= 4.1-13
+BuildRequires:	perl-tools-pod
 Requires:	nagios-common
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -27,11 +28,15 @@ uses RRDs and Nagios::Plugin.
 %setup -qcT
 cp -p %{SOURCE0} %{plugin}
 
+%build
+pod2man %{plugin} > %{plugin}.1
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{plugindir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{plugindir},%{_mandir}/man1}
 install -p %{plugin} $RPM_BUILD_ROOT%{plugindir}/%{plugin}
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/%{plugin}.cfg
+cp -p %{plugin}.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -40,3 +45,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(640,root,nagios) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{plugin}.cfg
 %attr(755,root,root) %{plugindir}/%{plugin}
+%{_mandir}/man1/check_rrd.1*
