@@ -1,5 +1,4 @@
 %define		plugin	check_rrd
-%include	/usr/lib/rpm/macros.perl
 Summary:	Nagios plugin to check values from RRD database
 Name:		nagios-plugin-%{plugin}
 Version:	1.0
